@@ -3,14 +3,14 @@
         <div v-if="isEditMode" class="addArea">
             <p>Edit mode is activated!</p>
             <input text="text" v-model="updatedCity.name" />
-            <button @click="changeMode(),updateCity(updatedCity)">Save</button>
+            <button @click="onSave()">Save</button>
             <button @click="changeMode()">Cancel</button>
         </div>
 
         <div v-else class="addArea">
             <p>Normal mode is on!</p>
             <input type="text" v-model="newCity.name" />
-            <button @click="addCity(Object.assign({}, newCity)),resetInput()">Add</button>
+            <button @click="onAdd()">Add</button>
         </div>
 
         <div v-for="item in list" :key="item.id">
@@ -39,7 +39,7 @@ export default {
         return {
             isEditMode: false,
             updatedCity: {
-                cityName: '',
+                name: '',
                 id: '',
             },
             newCity: {
@@ -59,9 +59,14 @@ export default {
             this.updatedCity.name = item.name;
         },
         changeMode() {
-          this.isEditMode = false;  
+            this.isEditMode = false;  
         }, 
-        resetInput() {
+        onSave() {
+            this.changeMode(),
+            this.updateCity({...this.updatedCity});
+        },
+        onAdd() {
+            this.addCity({...this.newCity});
             this.newCity.id = uuid();
             this.newCity.name = '';
         },

@@ -1,14 +1,22 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
         cities: [ 
-            {id: 0, name: 'Satu Mare'},
-            {id: 1, name: 'Arad'},
-            {id: 2, name: 'Timisoara'},
+            {
+                id: 0, 
+                name: 'Satu Mare',
+            }, 
+            {
+                id: 1,
+                name: 'Arad',
+            }, 
+            { 
+                id: 2,
+                name: 'Timisoara',
+            }, 
         ],
     },
     getters: {
@@ -16,7 +24,8 @@ export const store = new Vuex.Store({
             return state.cities;
         },
         cityToString: (state) => (city) => {
-            return 'ID: ' + city.id + ' Name: ' + city.name;
+            const { id, name } = city;
+            return `ID: ${id}, Name: ${name}`;
         },
     },
     mutations: {
@@ -26,13 +35,13 @@ export const store = new Vuex.Store({
         },
         updateCity: (state, city) => {
             //change city name
-            const selectedCity = state.cities.filter(item => item.id === city.id)[0];
-            selectedCity.name = city.name;
+            let index = state.cities.findIndex(item => item.id === city.id);
+            Vue.set(state.cities, index, city);
         },
         deleteCity: (state, id) => {
             //delete city by id
             let index = state.cities.findIndex(item => item.id === id);
-            let deleted = state.cities.splice(index, 1);
+            state.cities.splice(index, 1);
         },
     },
     actions: {
